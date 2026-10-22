@@ -80,7 +80,7 @@ class _TallyPageState extends State<TallyPage> {
   }
 
   Future<void> _vibrate(int ms) async {
-    if (await Vibration.hasVibrator() ?? false) {
+    if (await Vibration.hasVibrator()) {
       Vibration.vibrate(duration: ms);
     }
   }

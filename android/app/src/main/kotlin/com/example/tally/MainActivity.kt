@@ -1,4 +1,4 @@
-package com.example.tally
+package com.mercury.tally
 
 import io.flutter.embedding.android.FlutterActivity
 
