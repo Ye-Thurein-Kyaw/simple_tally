@@ -1,4 +1,5 @@
-import '../models/tally_models.dart';
+import '../models/day_task.dart';
+import '../models/tally_plan.dart';
 
 const List<String> gatha24 = [
   "အရဟံဝတ လာဘံ ဟေတုပစ္စယော",

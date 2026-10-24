@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import '../models/tally_models.dart';
+import '../models/day_task.dart';
+import '../models/tally_plan.dart';
 
-class _DayDraft {
+class DayDraft {
   final TextEditingController phrases;
   final TextEditingController beads;
   final TextEditingController rounds;
 
-  _DayDraft({String phrases = '', int beads = 108, int rounds = 7})
+  DayDraft({String phrases = '', int beads = 108, int rounds = 7})
       : phrases = TextEditingController(text: phrases),
         beads = TextEditingController(text: '$beads'),
         rounds = TextEditingController(text: '$rounds');
@@ -28,7 +29,7 @@ class PlanEditorPage extends StatefulWidget {
 
 class _PlanEditorPageState extends State<PlanEditorPage> {
   late final TextEditingController _name;
-  final List<_DayDraft> _days = [];
+  final List<DayDraft> _days = [];
 
   @override
   void initState() {
@@ -36,14 +37,14 @@ class _PlanEditorPageState extends State<PlanEditorPage> {
     _name = TextEditingController(text: widget.plan?.name ?? '');
     if (widget.plan != null) {
       for (final d in widget.plan!.days) {
-        _days.add(_DayDraft(
+        _days.add(DayDraft(
           phrases: d.phrases.join('\n'),
           beads: d.beadsPerRound,
           rounds: d.rounds,
         ));
       }
     } else {
-      _days.add(_DayDraft());
+      _days.add(DayDraft());
     }
   }
 
@@ -96,7 +97,7 @@ class _PlanEditorPageState extends State<PlanEditorPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => setState(() => _days.add(_DayDraft())),
+        onPressed: () => setState(() => _days.add(DayDraft())),
         icon: const Icon(Icons.add),
         label: const Text('ရက်ထပ်ထည့်'),
       ),
@@ -159,7 +160,7 @@ class _PlanEditorPageState extends State<PlanEditorPage> {
                             controller: _days[i].rounds,
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
-                              labelText: 'ပတ်အရေအတွက်',
+                              labelText: '၁ ပတ် ပုတီးလုံး',
                               border: OutlineInputBorder(),
                             ),
                           ),

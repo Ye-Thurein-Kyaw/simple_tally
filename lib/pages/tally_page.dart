@@ -1,11 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 
-import '../models/tally_models.dart';
+import '../models/tally_plan.dart';
+import '../models/progress.dart';
 import '../data/default_plans.dart';
+import '../services/storage_service.dart';
 import 'plan_editor_page.dart';
 
 class TallyPage extends StatefulWidget {
@@ -16,6 +16,7 @@ class TallyPage extends StatefulWidget {
 }
 
 class _TallyPageState extends State<TallyPage> {
+  final StorageService _storage = StorageService();
   List<TallyPlan> _plans = [];
   Map<String, Progress> _progress = {};
   String? _currentId;
@@ -46,37 +47,27 @@ class _TallyPageState extends State<TallyPage> {
   }
 
   Future<void> _load() async {
-    final prefs = await SharedPreferences.getInstance();
     try {
-      final plansJson = prefs.getString('plans_v2');
-      if (plansJson != null) {
-        _plans = (jsonDecode(plansJson) as List)
-            .map((e) => TallyPlan.fromJson(e))
-            .toList();
-      }
-      final progJson = prefs.getString('progress_v2');
-      if (progJson != null) {
-        final m = jsonDecode(progJson) as Map<String, dynamic>;
-        _progress = m.map((k, v) => MapEntry(k, Progress.fromJson(v)));
-      }
-      _currentId = prefs.getString('current_plan_v2');
+      _plans = await _storage.loadPlans();
+      _progress = await _storage.loadProgress();
+      _currentId = await _storage.loadCurrentPlanId();
     } catch (_) {
       _plans = [];
       _progress = {};
     }
-    if (_plans.isEmpty) _plans = getDefaultPlans();
+    if (_plans.isEmpty) {
+      _plans = getDefaultPlans();
+      await _storage.savePlans(_plans);
+    }
     if (_plan == null) _currentId = _plans.first.id;
     setState(() => _loaded = true);
     _save();
   }
 
   Future<void> _save() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        'plans_v2', jsonEncode(_plans.map((p) => p.toJson()).toList()));
-    await prefs.setString('progress_v2',
-        jsonEncode(_progress.map((k, v) => MapEntry(k, v.toJson()))));
-    if (_currentId != null) await prefs.setString('current_plan_v2', _currentId!);
+    await _storage.savePlans(_plans);
+    await _storage.saveProgress(_progress);
+    if (_currentId != null) await _storage.saveCurrentPlanId(_currentId!);
   }
 
   Future<void> _vibrate(int ms) async {

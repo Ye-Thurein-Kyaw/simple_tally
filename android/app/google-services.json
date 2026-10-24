@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "272846771089",
+    "project_id": "a-date-htan-padee",
+    "storage_bucket": "a-date-htan-padee.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272846771089:android:2cc06c12d829e27000c030",
+        "android_client_info": {
+          "package_name": "com.mercury.tally"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgqq8IBQ8h3hvJCxcMn2Bpcp8brtJgQrw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
